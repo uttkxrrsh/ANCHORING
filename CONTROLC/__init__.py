@@ -10,7 +10,7 @@ Your app description
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'COMPLEX'
+    NAME_IN_URL = 'CONTROLC'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 2
 
