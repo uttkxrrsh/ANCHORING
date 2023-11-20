@@ -1,0 +1,14 @@
+{{ block title }}
+    Here are the guesses
+{{ endblock }}
+
+{{ block content }}
+Your guess was {{ player.guess }}.<br><br>
+Real value was {{ real_val }}.<br><br>
+Average guess was {{average_guess}}.<br>
+
+
+    {{ next_button }}
+{{ endblock }}
+
+

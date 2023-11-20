@@ -1,0 +1,18 @@
+{{ block title }}
+    Guess
+    Formula:<br> X =  A + B - C + D(random[-25,25])
+{{ endblock }}
+{{ block content }}
+    A  = {{ A }}<br>
+    B  = {{ B }}<br>
+    C  = {{ C }}<br>
+    you are not given D<br>
+
+    Guess for (X):
+
+    {{ formfields }}
+    {{ next_button }}
+    {{ include_sibling 'instructions.html' }}
+
+    
+{{ endblock }}

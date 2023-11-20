@@ -10,7 +10,7 @@ Your app description
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'COMPLEX'
+    NAME_IN_URL = 'BASIC'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 2
 
@@ -24,24 +24,22 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    # a is a random value from uniform distribution 60, 150
-    a = models.FloatField(initial= random.randint(60, 150))
-    # b is random value from uniform distribution 0, 50
-    b = models.FloatField(intial = random.randint(0, 50))
+    # a is random value from uniform distribution 50 , 150
+    a = models.FloatField(initial= random.randint(50, 150))
+    # b is random value from uniform distribution 51, 150
+    b = models.FloatField(intial = random.randint(51, 150))
     # c is random value from uniform distribution 0, 75
     c = models.FloatField(initial= random.randint(0, 75))
-    # d is random value from uniform distribution 0, 10
-    d = models.FloatField(initial= random.randint(0, 10))
-    # e is random value from uniform distribution -25, 25
-    e = models.FloatField(initial= random.randint(-25, 25))
+    # d is random value from uniform distribution -25, 25
+    d = models.FloatField(initial= random.randint(-25, 25))
 
-    guess = models.FloatField()
+    guess = models.FloatField(intial = 0)
 
 
 def set_payoffs(group: Group):
     player_lists = group.get_players()
     for p in player_lists:
-        real_val = 2*p.a - p.b - 0.5*p.c + p.d*p.d + p.e
+        real_val = p.a + p.b - p.c + p.d
         p.payoff = max(0, 0.5 - 0.01*abs(p.guess - real_val))
 
 
@@ -59,15 +57,15 @@ class Introduction(Page):
         return player.round_number == 1
     
 class Calculate(Page):
-    timeout_seconds = 30
+    timeout_seconds = 60
     def vars_for_template(player: Player):
-
-        player.a = random.randint(60, 150)
-        player.b = random.randint(0, 50)
+        player.a = random.randint(50, 150)
+        # b is random value from uniform distribution 51, 150
+        player.b = random.randint(51, 150)
+        # c is random value from uniform distribution 0, 75
         player.c = random.randint(0, 75)
-        player.d = random.randint(0, 10)
-        player.e = random.randint(-25, 25)
-
+        # d is random value from uniform distribution -25, 25
+        player.d = random.randint(-25, 25)
         return {
             'A': player.a,
             'B': player.b,
@@ -91,5 +89,7 @@ class Results(Page):
             'average_guess': average_guess,
             'real_val': real_val,
         }
+
+
 
 page_sequence = [Introduction, Calculate, ResultsWaitPage, Results]

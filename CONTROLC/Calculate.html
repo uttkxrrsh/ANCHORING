@@ -1,0 +1,20 @@
+{{ block title }}
+    Calculate and Maximize Payoff
+    Formula: X =  2*A - B - 0.5*C + D^2 + E(random[-25,25])
+
+{{ endblock }}
+{{ block content }}
+    A  = {{ A }}<br>
+    B  = {{ B }}<br>
+    C  = {{ C }}<br>
+    D = {{ D }}<br>
+    you are not given E<br>
+
+    Guess for (X):
+
+    {{ formfields }}
+    {{ next_button }}
+    {{ include_sibling 'instructions.html' }}
+
+
+{{ endblock }}
