@@ -44,10 +44,7 @@ def set_payoffs(group: Group):
 
 
 
-def get_average_guess(group: Group):
-    player_lists = group.get_players()
-    average_guess = sum([p.guess for p in player_lists])/len(player_lists)
-    return average_guess
+
 
 # PAGES
 
@@ -79,17 +76,6 @@ class Calculate(Page):
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
 
-class Results(Page):
-    def vars_for_template(player: Player):
-        group = player.group
-        player_lists = group.get_players()
-        average_guess = get_average_guess(group)
-        real_val = player.a + player.b - player.c + player.d
-        return {
-            'average_guess': average_guess,
-            'real_val': real_val,
-        }
 
 
-
-page_sequence = [Introduction, Calculate, ResultsWaitPage, Results]
+page_sequence = [Introduction, Calculate, ResultsWaitPage]
