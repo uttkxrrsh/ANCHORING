@@ -12,7 +12,7 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'BASIC'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 2
+    NUM_ROUNDS = 4
     GUESS_MAX = 325
 
 
@@ -34,7 +34,7 @@ class Player(BasePlayer):
     # d is random value from uniform distribution -25, 25
     d = models.FloatField(initial= random.randint(-25, 25))
 
-    guess = models.FloatField(min = 0, max = C.GUESS_MAX, initial = 0, label = "What is your guess?")
+    guess = models.FloatField(min = 0, max = C.GUESS_MAX, label = "What is your guess?")
 
         # fields should be higher or lower true:higher and false:lower
     higher = models.BooleanField(
@@ -66,7 +66,7 @@ class Introduction(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.round_number == 1
-    
+
 class Calculate(Page):
     timeout_seconds = 60
     def vars_for_template(player: Player):
@@ -91,6 +91,10 @@ class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
 
 class Results(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number != C.NUM_ROUNDS
+    
     def vars_for_template(player: Player):
         group = player.group
         player_lists = group.get_players()
@@ -103,6 +107,21 @@ class Results(Page):
     form_model = 'player'
     form_fields = ['higher']
 
+class ResultsE(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == C.NUM_ROUNDS
+    
+    def vars_for_template(player: Player):
+        group = player.group
+        # player_lists = group.get_players()
+        average_guess = get_average_guess(group)
+        real_val = player.a + player.b - player.c + player.d
+        return {
+            'average_guess': average_guess,
+            'real_val': real_val,
+        }
 
 
-page_sequence = [Introduction, Calculate, ResultsWaitPage, Results]
+
+page_sequence = [Introduction, Calculate, ResultsWaitPage, Results, ResultsE]

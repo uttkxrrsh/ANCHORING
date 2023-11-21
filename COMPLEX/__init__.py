@@ -13,7 +13,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'COMPLEX'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 2
-    GUESS_MAX = 
+    GUESS_MAX = 275
 
 
 class Subsession(BaseSubsession):
@@ -36,7 +36,7 @@ class Player(BasePlayer):
     # e is random value from uniform distribution -25, 25
     e = models.FloatField(initial= random.randint(-25, 25))
 
-    guess = models.FloatField()
+    guess = models.FloatField(min =0, max = 275,label = "What is your guess?")
         # fields should be higher or lower true:higher and false:lower
     higher = models.BooleanField(
         choices=[
@@ -94,7 +94,7 @@ class ResultsWaitPage(WaitPage):
 class Results(Page):
     def vars_for_template(player: Player):
         group = player.group
-        player_lists = group.get_players()
+        # player_lists = group.get_players()
         average_guess = get_average_guess(group)
         real_val = player.a + player.b - player.c + player.d
         return {
