@@ -13,6 +13,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'BASIC'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 2
+    GUESS_MAX = 325
 
 
 class Subsession(BaseSubsession):
@@ -33,7 +34,17 @@ class Player(BasePlayer):
     # d is random value from uniform distribution -25, 25
     d = models.FloatField(initial= random.randint(-25, 25))
 
-    guess = models.FloatField(intial = 0)
+    guess = models.FloatField(min = 0, max = C.GUESS_MAX, initial = 0, label = "What is your guess?")
+
+        # fields should be higher or lower true:higher and false:lower
+    higher = models.BooleanField(
+        choices=[
+            [True, 'Higher'],
+            [False, 'Lower']
+        ],
+        widget=widgets.RadioSelect
+        ,label = "Is your guess higher or lower than the average guess?"
+    )
 
 
 def set_payoffs(group: Group):
@@ -89,6 +100,8 @@ class Results(Page):
             'average_guess': average_guess,
             'real_val': real_val,
         }
+        form_model = 'player'
+        form_fields = ['higher']
 
 
 

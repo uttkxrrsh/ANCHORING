@@ -36,6 +36,8 @@ class Player(BasePlayer):
     guess = models.FloatField(intial = 0)
 
 
+
+
 def set_payoffs(group: Group):
     player_lists = group.get_players()
     for p in player_lists:

@@ -36,6 +36,15 @@ class Player(BasePlayer):
     e = models.FloatField(initial= random.randint(-25, 25))
 
     guess = models.FloatField()
+        # fields should be higher or lower true:higher and false:lower
+    higher = models.BooleanField(
+        choices=[
+            [True, 'Higher'],
+            [False, 'Lower']
+        ],
+        widget=widgets.RadioSelect,
+        label = "Is your guess higher or lower than the average guess?"
+    )
 
 
 def set_payoffs(group: Group):
@@ -91,5 +100,7 @@ class Results(Page):
             'average_guess': average_guess,
             'real_val': real_val,
         }
+        form_model = 'player'
+        form_fields = ['higher']
 
 page_sequence = [Introduction, Calculate, ResultsWaitPage, Results]
