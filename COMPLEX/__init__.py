@@ -104,4 +104,20 @@ class Results(Page):
     form_model = 'player'
     form_fields = ['higher']
 
-page_sequence = [Introduction, Calculate, ResultsWaitPage, Results]
+class ResultsE(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == C.NUM_ROUNDS
+
+    def vars_for_template(player: Player):
+        group = player.group
+        # player_lists = group.get_players()
+        average_guess = get_average_guess(group)
+        real_val = player.a + player.b - player.c + player.d
+        return {
+            'average_guess': average_guess,
+            'real_val': real_val,
+        }
+
+
+page_sequence = [Introduction, Calculate, ResultsWaitPage, Results, ResultsE]
