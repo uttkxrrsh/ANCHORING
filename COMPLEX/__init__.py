@@ -13,6 +13,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'COMPLEX'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 2
+    GUESS_MAX = 
 
 
 class Subsession(BaseSubsession):
@@ -43,7 +44,7 @@ class Player(BasePlayer):
             [False, 'Lower']
         ],
         widget=widgets.RadioSelect,
-        label = "Is your guess higher or lower than the average guess?"
+        label = "What will be the value be in next round compared to current average?"
     )
 
 
@@ -100,7 +101,7 @@ class Results(Page):
             'average_guess': average_guess,
             'real_val': real_val,
         }
-        form_model = 'player'
-        form_fields = ['higher']
+    form_model = 'player'
+    form_fields = ['higher']
 
 page_sequence = [Introduction, Calculate, ResultsWaitPage, Results]

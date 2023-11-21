@@ -42,8 +42,8 @@ class Player(BasePlayer):
             [True, 'Higher'],
             [False, 'Lower']
         ],
-        widget=widgets.RadioSelect
-        ,label = "Is your guess higher or lower than the average guess?"
+        widget=widgets.RadioSelect,
+        label = "What will be the value be in next round compared to current average?"
     )
 
 
@@ -100,8 +100,8 @@ class Results(Page):
             'average_guess': average_guess,
             'real_val': real_val,
         }
-        form_model = 'player'
-        form_fields = ['higher']
+    form_model = 'player'
+    form_fields = ['higher']
 
 
 
