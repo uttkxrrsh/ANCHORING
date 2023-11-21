@@ -42,7 +42,7 @@ def set_payoffs(group: Group):
     player_lists = group.get_players()
     for p in player_lists:
         real_val = 2*p.a - p.b - 0.5*p.c + p.d*p.d + p.e
-        p.payoff = max(0, 0.5 - 0.01*abs(p.guess - real_val))
+        p.payoff = max(0, 50 - abs(p.guess - real_val))
 
 
 

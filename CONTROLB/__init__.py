@@ -36,16 +36,11 @@ class Player(BasePlayer):
     guess = models.FloatField(intial = 0)
 
 
-
-
 def set_payoffs(group: Group):
     player_lists = group.get_players()
     for p in player_lists:
         real_val = p.a + p.b - p.c + p.d
-        p.payoff = max(0, 0.5 - 0.01*abs(p.guess - real_val))
-
-
-
+        p.payoff = max(0, 50 - abs(p.guess - real_val))
 
 
 # PAGES
@@ -77,7 +72,6 @@ class Calculate(Page):
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
-
 
 
 page_sequence = [Introduction, Calculate, ResultsWaitPage]

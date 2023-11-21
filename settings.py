@@ -18,6 +18,12 @@ SESSION_CONFIGS = [
             app_sequence=['CONTROLC'],
             num_demo_participants=2,
             ),
+    dict(name = 'mpl',
+         display_name = 'Multiple Price List (Holt/Laury)',
+         num_demo_participants=1,
+            app_sequence=['mpl'],
+            ),
+
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
