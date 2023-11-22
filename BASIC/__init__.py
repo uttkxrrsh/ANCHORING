@@ -62,6 +62,11 @@ def get_average_guess(group: Group):
 
 # PAGES
 
+# To-Do
+# normal distribution
+# a,b,c,d same in same round for players
+# data anaylsis and inference from the results
+
 class Introduction(Page):
     @staticmethod
     def is_displayed(player: Player):
