@@ -86,5 +86,19 @@ class Calculate(Page):
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
 
+class AwaitPage(WaitPage):
+    def vars_for_template(player: Player):
+        group = player.group
+        player_lists = group.get_players()
+        A = normal_random_integer_within_range(60,150)
+        B = normal_random_integer_within_range(0,50)
+        C = normal_random_integer_within_range(0,75)
+        D = normal_random_integer_within_range(0,10)
+        for p in player_lists:
+            p.a = A
+            p.b = B
+            p.c = C
+            p.d = D
+            p.e = normal_random_integer_within_range(-25,25)
 
-page_sequence = [Introduction, Calculate, ResultsWaitPage]
+page_sequence = [Introduction,AwaitPage, Calculate, ResultsWaitPage]

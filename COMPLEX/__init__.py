@@ -138,6 +138,6 @@ class AwaitPage(WaitPage):
             p.b = B
             p.c = C
             p.d = D
-            p.d = normal_random_integer_within_range(-25,25)
+            p.e = normal_random_integer_within_range(-25,25)
 
 page_sequence = [Introduction, AwaitPage, Calculate, ResultsWaitPage, Results, ResultsE]
