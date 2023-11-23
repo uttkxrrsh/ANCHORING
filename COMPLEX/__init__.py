@@ -1,13 +1,11 @@
 from otree.api import *
 import random
+import numpy as np
 
 
 doc = """
 Your app description
 """
-
-
-
 
 class C(BaseConstants):
     NAME_IN_URL = 'COMPLEX'
@@ -23,12 +21,29 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
+def normal_random_integer_within_range(min_value, max_value):
+    # Calculate the mean of the range
+    mean_value = (min_value + max_value) / 2
+
+    # Calculate the standard deviation based on the range
+    std_deviation = (max_value - min_value) / 4  # You can adjust the factor as needed
+
+    # Generate a random variable from a normal distribution
+    random_variable = np.random.normal(loc=mean_value, scale=std_deviation)
+
+    # Ensure the random variable is within the specified range
+    random_variable = max(min(random_variable, max_value), min_value)
+
+    # Round the result to the nearest integer
+    random_variable = round(random_variable)
+
+    return random_variable
 
 class Player(BasePlayer):
     # a is a random value from uniform distribution 60, 150
     a = models.FloatField(initial= random.randint(60, 150))
     # b is random value from uniform distribution 0, 50
-    b = models.FloatField(intial = random.randint(0, 50))
+    b = models.FloatField(initial = random.randint(0, 50))
     # c is random value from uniform distribution 0, 75
     c = models.FloatField(initial= random.randint(0, 75))
     # d is random value from uniform distribution 0, 10
@@ -61,8 +76,6 @@ def get_average_guess(group: Group):
     average_guess = sum([p.guess for p in player_lists])/len(player_lists)
     return average_guess
 
-# PAGES
-
 class Introduction(Page):
     @staticmethod
     def is_displayed(player: Player):
@@ -71,13 +84,6 @@ class Introduction(Page):
 class Calculate(Page):
     timeout_seconds = 30
     def vars_for_template(player: Player):
-
-        player.a = random.randint(60, 150)
-        player.b = random.randint(0, 50)
-        player.c = random.randint(0, 75)
-        player.d = random.randint(0, 10)
-        player.e = random.randint(-25, 25)
-
         return {
             'A': player.a,
             'B': player.b,
@@ -91,18 +97,19 @@ class Calculate(Page):
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
 
+
 class Results(Page):
     def vars_for_template(player: Player):
         group = player.group
-        # player_lists = group.get_players()
         average_guess = get_average_guess(group)
-        real_val = player.a + player.b - player.c + player.d
+        real_val = 2*player.a - player.b - 0.5*player.c + player.d*player.d + player.e
         return {
             'average_guess': average_guess,
             'real_val': real_val,
         }
     form_model = 'player'
     form_fields = ['higher']
+
 
 class ResultsE(Page):
     @staticmethod
@@ -111,13 +118,26 @@ class ResultsE(Page):
 
     def vars_for_template(player: Player):
         group = player.group
-        # player_lists = group.get_players()
         average_guess = get_average_guess(group)
-        real_val = player.a + player.b - player.c + player.d
+        real_val = 2*player.a - player.b - 0.5*player.c + player.d*player.d + player.e
         return {
             'average_guess': average_guess,
             'real_val': real_val,
         }
 
+class AwaitPage(WaitPage):
+    def vars_for_template(player: Player):
+        group = player.group
+        player_lists = group.get_players()
+        A = normal_random_integer_within_range(60,150)
+        B = normal_random_integer_within_range(0,50)
+        C = normal_random_integer_within_range(0,75)
+        D = normal_random_integer_within_range(0,10)
+        for p in player_lists:
+            p.a = A
+            p.b = B
+            p.c = C
+            p.d = D
+            p.d = normal_random_integer_within_range(-25,25)
 
-page_sequence = [Introduction, Calculate, ResultsWaitPage, Results, ResultsE]
+page_sequence = [Introduction, AwaitPage, Calculate, ResultsWaitPage, Results, ResultsE]

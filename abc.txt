@@ -1,0 +1,4 @@
+# To-Do
+# normal distribution
+# a,b,c,d same in same round for players
+# data anaylsis and inference from the results

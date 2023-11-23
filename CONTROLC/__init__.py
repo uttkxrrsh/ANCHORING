@@ -1,5 +1,6 @@
 from otree.api import *
 import random
+import numpy as np
 
 
 doc = """
@@ -22,12 +23,29 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
+def normal_random_integer_within_range(min_value, max_value):
+    # Calculate the mean of the range
+    mean_value = (min_value + max_value) / 2
+
+    # Calculate the standard deviation based on the range
+    std_deviation = (max_value - min_value) / 4  # You can adjust the factor as needed
+
+    # Generate a random variable from a normal distribution
+    random_variable = np.random.normal(loc=mean_value, scale=std_deviation)
+
+    # Ensure the random variable is within the specified range
+    random_variable = max(min(random_variable, max_value), min_value)
+
+    # Round the result to the nearest integer
+    random_variable = round(random_variable)
+
+    return random_variable
 
 class Player(BasePlayer):
     # a is a random value from uniform distribution 60, 150
     a = models.FloatField(initial= random.randint(60, 150))
     # b is random value from uniform distribution 0, 50
-    b = models.FloatField(intial = random.randint(0, 50))
+    b = models.FloatField(initial = random.randint(0, 50))
     # c is random value from uniform distribution 0, 75
     c = models.FloatField(initial= random.randint(0, 75))
     # d is random value from uniform distribution 0, 10
@@ -45,8 +63,6 @@ def set_payoffs(group: Group):
         p.payoff = max(0, 50 - abs(p.guess - real_val))
 
 
-
-
 # PAGES
 
 class Introduction(Page):
@@ -57,13 +73,6 @@ class Introduction(Page):
 class Calculate(Page):
     timeout_seconds = 30
     def vars_for_template(player: Player):
-
-        player.a = random.randint(60, 150)
-        player.b = random.randint(0, 50)
-        player.c = random.randint(0, 75)
-        player.d = random.randint(0, 10)
-        player.e = random.randint(-25, 25)
-
         return {
             'A': player.a,
             'B': player.b,
@@ -76,5 +85,6 @@ class Calculate(Page):
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
+
 
 page_sequence = [Introduction, Calculate, ResultsWaitPage]
